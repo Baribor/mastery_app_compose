@@ -28,19 +28,17 @@ fun ToolbarLayout(toolbarData: ToolbarData, content: @Composable () -> Unit) {
         topBar = {
             TopAppBar(
                 title = {
-                    toolbarData.title?.let { title ->
-                        Text(text = title, style = MaterialTheme.typography.titleMedium)
-                    }
+                    Text(text = toolbarData.title, style = MaterialTheme.typography.titleMedium)
 
                 },
                 navigationIcon = {
                     toolbarData.navigationIcon()
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = MasteryGreen,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White,
-                    actionIconContentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 actions = {
                     toolbarData.actions()

@@ -103,7 +103,10 @@ fun IntroScreen(modifier: Modifier = Modifier, navController: NavHostController?
                     onClick = {
                         if (index == 2)
                         {
-                            navController?.navigate(Screen.HomeScreen.route)
+                            navController?.apply {
+                                popBackStack()
+                                navigate(Screen.HomeScreen.route)
+                            }
                             return@Button
                         }
                         index++

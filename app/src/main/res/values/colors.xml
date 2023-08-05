@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="mastery_green">#FF6BBF43</color>
     <color name="colorAccent">#FFEF5350</color>
+    <color name="windowsBackgroundLight">#FFEEEEEE</color>
 </resources>

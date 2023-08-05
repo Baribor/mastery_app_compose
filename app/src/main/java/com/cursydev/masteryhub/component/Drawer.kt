@@ -1,14 +1,19 @@
 package com.cursydev.masteryhub.component
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
@@ -29,29 +34,47 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.cursydev.masteryhub.R
+import com.cursydev.masteryhub.component.ui.GeneralViewModel
 import com.cursydev.masteryhub.screens.Screen
+import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Drawer(drawerState: DrawerState, navHostController: NavHostController? = null, mainContent: @Composable () -> Unit = {}) {
+fun Drawer(
+    drawerState: DrawerState,
+    navHostController: NavHostController? = null,
+    isLightTheme: Boolean,
+    onThemeToggle: ()->Unit,
+    mainContent: @Composable () -> Unit = {}
+) {
     val scope = rememberCoroutineScope()
     val navs = listOf("Home", "Media", "Blog", "Community")
-    val routes = listOf(Screen.HomeScreen.route, Screen.MediaScreen.route, Screen.BlogScreen.route, Screen.CommunityScreen.route)
+    val routes = listOf(
+        Screen.HomeScreen.route,
+        Screen.MediaScreen.route,
+        Screen.BlogScreen.route,
+        Screen.CommunityScreen.route
+    )
 
     val icons = listOf(
         Icons.Filled.Home,
@@ -92,7 +115,7 @@ fun Drawer(drawerState: DrawerState, navHostController: NavHostController? = nul
                 }
                 Row {
                     Spacer(modifier = Modifier.weight(1f))
-                    ThemeToggler()
+                    ThemeToggler(isLightTheme, onThemeToggle)
                 }
 
             }
@@ -104,13 +127,44 @@ fun Drawer(drawerState: DrawerState, navHostController: NavHostController? = nul
                     label = { Text(text = name) },
                     selected = selectedItem.value == name,
                     onClick = {
-                        scope.launch { drawerState.close() }
+                        scope.launch {
+                            navHostController?.apply {
+                                popBackStack()
+                                navigate(routes[i]) {
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+
+                            drawerState.close()
+                        }
                         selectedItem.value = name
-                        navHostController?.navigate(routes[i])
+
                     },
-                    icon = { Icon(icons[i], contentDescription = null) },
+                    icon = {
+                        when (selectedItem.value) {
+                            name -> Box(
+                                modifier = Modifier
+                                    .background(
+                                        Color.Black,
+                                        shape = CircleShape
+                                    )
+                                    .padding(2.dp)
+                            ) { Icon(icons[i], contentDescription = null) }
+
+                            else ->
+                                Icon(icons[i], contentDescription = null)
+
+                        }
+
+                    },
                     shape = RoundedCornerShape(topEnd = 30.dp, bottomEnd = 30.dp),
-                    modifier = Modifier.padding(end = 20.dp)
+                    modifier = Modifier.padding(end = 20.dp),
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = MaterialTheme.colorScheme.tertiary,
+                        selectedIconColor = Color.White,
+                        selectedTextColor = Color.White,
+                    )
                 )
             }
 
@@ -141,7 +195,12 @@ fun Drawer(drawerState: DrawerState, navHostController: NavHostController? = nul
 @Composable
 fun DrawerPreview() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
-    MaterialTheme {
-        Drawer(drawerState)
+    val generalViewModel: GeneralViewModel = viewModel()
+    val appUiState by generalViewModel.appState.collectAsState()
+
+    MasteryHubTheme(darkTheme = appUiState.isDarkTheme) {
+        Drawer(drawerState, isLightTheme = appUiState.isDarkTheme, onThemeToggle = {
+            generalViewModel.toggleTheme()
+        })
     }
 }

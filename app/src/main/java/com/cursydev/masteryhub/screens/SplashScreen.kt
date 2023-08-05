@@ -46,8 +46,12 @@ fun SplashBackground() {
 fun SplashScreen(modifier: Modifier = Modifier, navController: NavHostController? = null) {
 
     LaunchedEffect(key1 = null){
-        delay(3000);
-        navController?.navigate(Screen.IntroScreen.route)
+        delay(3000)
+
+        navController?.apply {
+            popBackStack()
+            navigate(Screen.IntroScreen.route)
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()){

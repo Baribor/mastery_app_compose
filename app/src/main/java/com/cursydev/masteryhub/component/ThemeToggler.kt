@@ -12,16 +12,13 @@ import androidx.compose.runtime.remember
 
 
 @Composable
-fun ThemeToggler() {
-    val isLightMode = remember {
-        mutableStateOf(true)
-    }
+fun ThemeToggler(isLightMode:Boolean, onToggle: ()->Unit) {
 
-    IconButton(onClick = { isLightMode.value = !isLightMode.value }) {
+    IconButton(onClick = { onToggle() }) {
         Crossfade(targetState = isLightMode) { isLightMode ->
             Icon(
-                if (isLightMode.value) Icons.Filled.DarkMode else Icons.Filled.LightMode,
-                contentDescription = "Darkmode"
+                if (isLightMode) Icons.Filled.DarkMode else Icons.Filled.LightMode,
+                contentDescription = "Theme changer"
             )
         }
 

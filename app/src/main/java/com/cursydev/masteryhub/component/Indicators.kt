@@ -13,9 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.cursydev.masteryhub.ui.theme.MasteryGreen
-import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
-import com.cursydev.masteryhub.ui.theme.Pink40
-import com.cursydev.masteryhub.ui.theme.PurpleGrey40
 
 
 @Composable
