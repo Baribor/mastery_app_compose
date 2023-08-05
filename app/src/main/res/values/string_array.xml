@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="intro_pics_desc">
+        <item>Stay informed with authentic news from Mastery blog</item>
+        <item>Stay entertained with cool musics and videos from Mastery Media</item>
+        <item>Start up each day with a motivational quote from Mastery Motivations</item>
+    </string-array>
+</resources>

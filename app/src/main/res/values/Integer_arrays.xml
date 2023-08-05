@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="intro_pics_ids">
+        <item>456</item>
+        <item>@drawable/entertainment</item>
+        <item>@drawable/motivational</item>
+    </integer-array>
+</resources>
