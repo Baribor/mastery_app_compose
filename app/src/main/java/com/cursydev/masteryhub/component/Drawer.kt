@@ -68,13 +68,11 @@ fun Drawer(
     mainContent: @Composable () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
-    val navs = listOf("Home", "Media", "Blog", "Community")
+    /*val navs = listOf("Home", "Media", "Blog", "Community")
     val routes = listOf(
         Screen.HomeScreen.route,
         Screen.MediaScreen.route,
-        Screen.BlogScreen.route,
-        Screen.CommunityScreen.route
-    )
+    )*/
 
     val icons = listOf(
         Icons.Filled.Home,
@@ -91,9 +89,9 @@ fun Drawer(
         Icons.Filled.Share
     )
 
-    val selectedItem = remember {
+    /*val selectedItem = remember {
         mutableStateOf(navs[0])
-    }
+    }*/
 
     ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
         ModalDrawerSheet(drawerShape = RectangleShape, modifier = Modifier.fillMaxWidth(.8f)) {
@@ -122,7 +120,7 @@ fun Drawer(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            navs.forEachIndexed { i, name ->
+           /* navs.forEachIndexed { i, name ->
                 NavigationDrawerItem(
                     label = { Text(text = name) },
                     selected = selectedItem.value == name,
@@ -169,7 +167,7 @@ fun Drawer(
             }
 
             Divider()
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))*/
 
             nonSelectableNav.forEachIndexed { i, name ->
                 NavigationDrawerItem(

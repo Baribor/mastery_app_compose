@@ -17,9 +17,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.cursydev.masteryhub.R
 import com.cursydev.masteryhub.component.DotIndicators
 import com.cursydev.masteryhub.component.IntroHeader
@@ -56,7 +56,7 @@ val constraintSet = ConstraintSet {
 
 
 @Composable
-fun IntroScreen(modifier: Modifier = Modifier, navController: NavHostController? = null) {
+fun IntroScreen(modifier: Modifier = Modifier, navController: NavController? = null) {
 
     val imgDescs = stringArrayResource(id = R.array.intro_pics_desc)
     val imgIds =

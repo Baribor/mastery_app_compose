@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.cursydev.masteryhub.R
 import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 import kotlinx.coroutines.delay
@@ -43,7 +43,7 @@ fun SplashBackground() {
 
 
 @Composable
-fun SplashScreen(modifier: Modifier = Modifier, navController: NavHostController? = null) {
+fun SplashScreen(modifier: Modifier = Modifier, navController: NavController? = null) {
 
     LaunchedEffect(key1 = null){
         delay(3000)
