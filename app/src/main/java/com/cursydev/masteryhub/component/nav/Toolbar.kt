@@ -1,5 +1,7 @@
 package com.cursydev.masteryhub.component.nav
 
+import android.icu.text.CaseMap.Title
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -22,22 +24,15 @@ sealed class Toolbar(val uiData: ToolbarUiData) {
             "Blogs", Icons.Filled.ArrowBack
         )
     )
-
-    object BlogLikeScreenToolbar : Toolbar(
-        ToolbarUiData(
-            "Liked Blogs", Icons.Filled.ArrowBack
-        )
-    )
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Toolbar.ToolbarLayout(actionsData: ToolbarActionsData?) {
+fun Toolbar.ToolbarLayout(actionsData: ToolbarActionsData?, title: String = "") {
     TopAppBar(
         title = {
-            Text(text = uiData.title, style = MaterialTheme.typography.titleMedium)
-
+            Text(text = title, style = MaterialTheme.typography.titleMedium)
         },
         navigationIcon = {
             uiData.navIcon?.let {

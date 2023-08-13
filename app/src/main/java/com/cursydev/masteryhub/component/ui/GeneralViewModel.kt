@@ -7,10 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavHostController
-import com.cursydev.masteryhub.component.nav.BottomNav
-import com.cursydev.masteryhub.component.nav.Toolbar
-import com.cursydev.masteryhub.component.nav.ToolbarActionsData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,14 +20,9 @@ class GeneralViewModel: ViewModel() {
     val appState : StateFlow<GeneralUiState> = _appState.asStateFlow()
 
     var drawerState by mutableStateOf(DrawerState(DrawerValue.Closed))
-
-    var toolbarActionsData by mutableStateOf<ToolbarActionsData?>(null)
-        private set
-    
-    var currentBlogTab by mutableStateOf(0)
         private set
 
-    var bottomNavActions by mutableStateOf<List<(()->Unit)>?>(null)
+    var exitApp: (()->Unit)? = null
         private set
 
     init {
@@ -47,39 +38,24 @@ class GeneralViewModel: ViewModel() {
         }
     }
 
-    fun setNavController(navController: NavHostController){
-        _appState.update {generalUiState ->
-            generalUiState.copy(
-                navController = navController
-            )
+    suspend fun toggleDrawerState(){
+        when(drawerState.isOpen){
+            true -> drawerState.close()
+            else -> drawerState.open()
         }
     }
 
-    fun setToolbar(toolbar: Toolbar?){
-        _appState.update { generalUiState ->
-            generalUiState.copy(
-                toolbar = toolbar
-            )
-        }
+    fun setOnExit(onExit: ()->Unit){
+        exitApp = onExit
     }
 
-    fun setToolbarActions(tAD: ToolbarActionsData?){
-        toolbarActionsData = tAD
-    }
-
-    fun setBottomNav(bottomNav: BottomNav?){
-        _appState.update { generalUiState ->
-            generalUiState.copy(
-                bottomNav = bottomNav
-            )
-        }
-    }
-
-    fun setBottomNavigationActions(actions: List<()->Unit>){
-        bottomNavActions = actions
-    }
-
-    fun setBlogCurrentTab(index:Int){
-        currentBlogTab = index
-    }
 }
+
+
+
+class ViewModels {
+    lateinit var blogViewModel: BlogViewModel
+    lateinit var generalViewModel: GeneralViewModel
+}
+
+val allViewModels = ViewModels()

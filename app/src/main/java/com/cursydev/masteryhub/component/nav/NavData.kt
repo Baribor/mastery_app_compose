@@ -14,9 +14,3 @@ data class ToolbarActionsData(
     val actionHandlers : List<()->Unit>? = null
 )
 
-
-data class BottomNavUiData(
-    val titles: List<String>,
-    val icons: List<ImageVector>
-)
-

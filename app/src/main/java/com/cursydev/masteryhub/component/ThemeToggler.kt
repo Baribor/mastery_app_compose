@@ -7,17 +7,18 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.cursydev.masteryhub.component.ui.GeneralViewModel
 
 
 @Composable
-fun ThemeToggler(isLightMode:Boolean, onToggle: ()->Unit) {
+fun ThemeToggler(isDarkTheme:Boolean, onThemeToggle: ()->Unit) {
 
-    IconButton(onClick = { onToggle() }) {
-        Crossfade(targetState = isLightMode) { isLightMode ->
+    IconButton(onClick = { onThemeToggle() }) {
+        Crossfade(targetState = isDarkTheme) { isDarkMode ->
             Icon(
-                if (isLightMode) Icons.Filled.DarkMode else Icons.Filled.LightMode,
+                if (isDarkMode) Icons.Filled.LightMode else Icons.Filled.DarkMode,
                 contentDescription = "Theme changer"
             )
         }
