@@ -13,6 +13,7 @@ import com.cursydev.masteryhub.component.ui.GeneralViewModel
 import com.cursydev.masteryhub.component.ui.allViewModels
 import com.cursydev.masteryhub.screens.HomeScreen
 import com.cursydev.masteryhub.screens.Screen
+import com.cursydev.masteryhub.screens.blog.BlogDetailScreen
 import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 import kotlinx.coroutines.launch
 

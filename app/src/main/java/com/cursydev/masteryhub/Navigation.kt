@@ -35,7 +35,12 @@ fun NavigationRoutes(onExit: ()->Unit) {
         }
 
         composable(route = Screen.IntroScreen.route){
-            IntroScreen(navController = controller)
+            IntroScreen{
+                controller.apply {
+                    popBackStack()
+                    navigate(Screen.HomeScreen.route)
+                }
+            }
         }
 
         composable(route = Screen.HomeScreen.route){

@@ -1,17 +1,16 @@
 package com.cursydev.masteryhub.component.layout
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.cursydev.masteryhub.component.nav.BottomNav
 import com.cursydev.masteryhub.component.nav.BottomNavLayout
@@ -20,8 +19,10 @@ import com.cursydev.masteryhub.component.nav.ToolbarActionsData
 import com.cursydev.masteryhub.component.nav.ToolbarLayout
 import com.cursydev.masteryhub.component.ui.allViewModels
 import com.cursydev.masteryhub.screens.Screen
+import com.cursydev.masteryhub.screens.blog.BlogDetailScreen
 import com.cursydev.masteryhub.screens.blog.BlogLikeScreen
 import com.cursydev.masteryhub.screens.blog.MainBlogScreen
+import com.cursydev.masteryhub.util.toBlogDetail
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,10 +34,14 @@ fun BlogLayout(onExternalNav: (route: String)->Unit) {
     LaunchedEffect(Unit){
         allViewModels.blogViewModel.startBlogFetch()
     }
+    val navBackStackEntry = controller.currentBackStackEntryAsState()
+    val destination = navBackStackEntry.value?.destination
 
     Scaffold(
         topBar = {
-
+            if (destination?.hierarchy?.any { it.route == Screen.BlogDetailScreen.route } == true){
+                return@Scaffold
+            }
             Toolbar.BlogScreenToolbar.ToolbarLayout(actionsData = ToolbarActionsData(
                 onNavClick = {
                     onExternalNav(Screen.HomeScreen.route)
@@ -45,7 +50,9 @@ fun BlogLayout(onExternalNav: (route: String)->Unit) {
         },
 
         bottomBar = {
-
+            if (destination?.hierarchy?.any { it.route == Screen.BlogDetailScreen.route } == true){
+                return@Scaffold
+            }
             BottomNav.BlogScreenBottomNav.BottomNavLayout(controller, changeTitle = {
                 allViewModels.blogViewModel.setTitle(it)
             }, onTabChange = {
@@ -53,18 +60,25 @@ fun BlogLayout(onExternalNav: (route: String)->Unit) {
             })
         }
     ) {
-
         Surface(modifier = Modifier.padding(it)) {
             NavHost(navController = controller, startDestination = allViewModels.blogViewModel.activeTabRoute){
 
                 composable(route= Screen.BlogScreens.MainBlogScreen.route){
-                    MainBlogScreen(controller)
+                    MainBlogScreen{ bD ->
+                        allViewModels.blogViewModel.setActiveBlogDetail(bD.toBlogDetail())
+                        controller.navigate(Screen.BlogDetailScreen.route)
+                    }
                 }
 
                 composable(route= Screen.BlogScreens.BlogLikeScreen.route){
                     BlogLikeScreen(controller)
                 }
 
+                composable(route = Screen.BlogDetailScreen.route){
+                    BlogDetailScreen(blogDetail = allViewModels.blogViewModel.activeBlogDetail!!){
+                        controller.popBackStack()
+                    }
+                }
             }
         }
     }

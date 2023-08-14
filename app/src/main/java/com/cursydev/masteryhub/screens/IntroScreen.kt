@@ -56,7 +56,7 @@ val constraintSet = ConstraintSet {
 
 
 @Composable
-fun IntroScreen(modifier: Modifier = Modifier, navController: NavController? = null) {
+fun IntroScreen(modifier: Modifier = Modifier, onExitScreen: ()->Unit = {}) {
 
     val imgDescs = stringArrayResource(id = R.array.intro_pics_desc)
     val imgIds =
@@ -94,7 +94,7 @@ fun IntroScreen(modifier: Modifier = Modifier, navController: NavController? = n
             ) {
                 AnimatedVisibility(visible = index < 2) {
 
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = { onExitScreen() }) {
                         Text(text = "SKIP", color = MasteryGreen)
                     }
                 }
@@ -103,10 +103,7 @@ fun IntroScreen(modifier: Modifier = Modifier, navController: NavController? = n
                     onClick = {
                         if (index == 2)
                         {
-                            navController?.apply {
-                                popBackStack()
-                                navigate(Screen.HomeScreen.route)
-                            }
+                           onExitScreen()
                             return@Button
                         }
                         index++

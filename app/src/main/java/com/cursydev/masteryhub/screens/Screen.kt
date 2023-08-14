@@ -19,6 +19,7 @@ sealed class Screen(val route: String){
     object SplashScreen: Screen("splash_screen")
     object MediaScreen: Screen("media_screen")
     object BlogScreen: Screen("blog_screen")
+    object BlogDetailScreen: Screen("blog_detail")
 
     sealed class BlogScreens(override val route: String, override val icon: ImageVector, override val title:String): Navigator{
         object MainBlogScreen: BlogScreens("blog", Icons.Filled.Newspaper, "Blog")

@@ -23,18 +23,22 @@ import androidx.navigation.NavController
 import com.cursydev.masteryhub.component.card.BlogCard
 import com.cursydev.masteryhub.component.ui.allViewModels
 import com.cursydev.masteryhub.component.ui.shimmerEffect
+import com.cursydev.masteryhub.screens.Screen
 import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 import com.cursydev.masteryhub.util.BlogData
+import com.cursydev.masteryhub.util.toBlogDetail
 
 
 @Composable
-fun MainBlogScreen(navController: NavController) {
+fun MainBlogScreen(onShowDetail: (blogData: BlogData)->Unit) {
 
     if(allViewModels.blogViewModel.blogs.value.isNotEmpty()){
         LazyColumn(modifier = Modifier.background(MaterialTheme.colorScheme.background),contentPadding = PaddingValues(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)){
             items(allViewModels.blogViewModel.blogs.value.size){
                 val blogData = allViewModels.blogViewModel.blogs.value[it]
-                BlogCard(blogData)
+                BlogCard(blogData){ bD ->
+                    onShowDetail(bD)
+                }
             }
         }
     }else{

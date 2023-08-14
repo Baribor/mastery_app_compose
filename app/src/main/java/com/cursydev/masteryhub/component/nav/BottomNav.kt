@@ -47,12 +47,15 @@ fun BottomNav.BottomNavLayout(navController: NavController?, changeTitle: (title
             BottomNavigationItem(selected =  destination?.hierarchy?.any { it.route == screen.route } == true, onClick = {
 
                 navController?.navigate(screen.route){
-                    navController.popBackStack()
+                    popUpTo(allViewModels.blogViewModel.activeTabRoute) {
+                        saveState = true
+                        inclusive = true
+                    }
                     launchSingleTop = true
                     restoreState = true
                 }
                 changeTitle(screen.title)
-                onTabChange(screen.route)
+                //onTabChange(screen.route)
             },
                 label = {
                      Text(text = screen.title, style = MaterialTheme.typography.titleSmall)

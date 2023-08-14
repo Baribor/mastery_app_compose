@@ -16,9 +16,10 @@ data class BlogDetail(
     var author: String,
     var authorImgSrc: String,
     var date: String,
-    var body: @Composable (()->Unit)? = null,
-    var success: Boolean = true
+    var body: @Composable (()->Unit)? = null
 )
+
+fun BlogData.toBlogDetail():BlogDetail = BlogDetail(mTitle, "Bassey Nton Nton", "Some author image link", "02/08/2023")
 
 
 enum class ModelType{
