@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,19 +31,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cursydev.masteryhub.R
-import com.cursydev.masteryhub.ui.theme.DrawerItemSelectedLight
+import com.cursydev.masteryhub.component.ui.allViewModels
 import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 import com.cursydev.masteryhub.util.BlogData
 import com.cursydev.masteryhub.util.BlogDetail
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BlogDetailScreen(blogDetail: BlogDetail, onNavBack: ()->Unit = {}) {
+fun BlogDetailScreen(blogData: BlogData, onNavBack: ()->Unit = {}) {
+
+    val blogDetail = allViewModels.blogDetailViewModel.blogDetail.value
+
+    LaunchedEffect(Unit){
+        allViewModels.blogDetailViewModel.startDetailFetch()
+    }
 
     Scaffold(
 
@@ -50,7 +56,7 @@ fun BlogDetailScreen(blogDetail: BlogDetail, onNavBack: ()->Unit = {}) {
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Black)) {
-                Text(text = blogDetail.mTitle, maxLines = 3, style = MaterialTheme.typography.headlineSmall, fontSize = 18.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp, color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier
+                Text(text = blogData.mTitle, maxLines = 3, style = MaterialTheme.typography.headlineSmall, fontSize = 18.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp, color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier
                     .clip(
                         RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
                     )
@@ -68,14 +74,14 @@ fun BlogDetailScreen(blogDetail: BlogDetail, onNavBack: ()->Unit = {}) {
                         .clip(
                             CircleShape
                         ))
-                    Text(text = blogDetail.author,
+                    Text(text = "",
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
-                        .background(DrawerItemSelectedLight)
+                        .background(MaterialTheme.colorScheme.secondary)
                         .padding(vertical = 2.dp, horizontal = 6.dp),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary)
+                        color = MaterialTheme.colorScheme.onSecondary)
 
                     Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
                         Text(
@@ -104,15 +110,10 @@ fun BlogDetailScreen(blogDetail: BlogDetail, onNavBack: ()->Unit = {}) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back arrow")
             }
         }
-    ) {
+    ) { paddingValues ->
 
-        Surface(modifier = Modifier.padding(it)) {
-
-            LazyColumn(contentPadding = PaddingValues(4.dp)){
-                items(10){
-                    Text(text = "The Federal Government has earmarked N15 billion in the 2023 budget for the implementation of the Safe Schools Initiative (SSI). The National Coordinator, Financing Safe Schools in Nigeria, Halima Illya Ibrahim stated this on Tuesday in Abuja while briefing journalists on the safe school initiative.")
-                }
-            }
+        Surface(modifier = Modifier.padding(paddingValues)) {
+            blogDetail?.let { BlogBody(it.body!!.getLayoutElems()) }
         }
     }
 }
@@ -123,6 +124,6 @@ fun BlogDetailScreen(blogDetail: BlogDetail, onNavBack: ()->Unit = {}) {
 fun BlogDetailScreenPreview() {
     val data = BlogDetail("A forensic audit of Central Bank of Nigerian underway - Nigeria President Tinubu", "Bassey Nton Nton","", "")
     MasteryHubTheme(darkTheme = false) {
-        BlogDetailScreen(blogDetail = data)
+        //BlogDetailScreen(blogDetail = data)
     }
 }

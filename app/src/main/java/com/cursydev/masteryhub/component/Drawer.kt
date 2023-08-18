@@ -12,16 +12,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Newspaper
-import androidx.compose.material.icons.filled.People
-import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.DrawerState
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,7 +24,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,9 +34,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.cursydev.masteryhub.R
 import com.cursydev.masteryhub.component.ui.GeneralViewModel
+import com.cursydev.masteryhub.component.ui.allViewModels
+import com.cursydev.masteryhub.screens.Screen
 import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 import kotlinx.coroutines.launch
 
@@ -98,6 +92,10 @@ fun Drawer(
                     selected = false,
                     onClick = {
                         scope.launch { generalViewModel.toggleDrawerState() }
+
+                        if(i == 0){
+                            allViewModels.generalViewModel.navController.navigate(Screen.SettingScreen.route)
+                        }
                     },
                     icon = { Icon(nonSelectableIcons[i], contentDescription = null) },
                     shape = RoundedCornerShape(topEnd = 30.dp, bottomEnd = 30.dp),

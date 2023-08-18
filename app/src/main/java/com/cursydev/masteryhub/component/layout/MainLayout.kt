@@ -13,6 +13,7 @@ import com.cursydev.masteryhub.component.ui.GeneralViewModel
 import com.cursydev.masteryhub.component.ui.allViewModels
 import com.cursydev.masteryhub.screens.HomeScreen
 import com.cursydev.masteryhub.screens.Screen
+import com.cursydev.masteryhub.screens.SettingScreen
 import com.cursydev.masteryhub.screens.blog.BlogDetailScreen
 import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 import kotlinx.coroutines.launch
@@ -24,11 +25,14 @@ fun MainLayout(generalViewModel: GeneralViewModel) {
     val controller = rememberNavController()
     val scope = rememberCoroutineScope()
     val appState = generalViewModel.appState.collectAsState()
-
+    allViewModels.generalViewModel.navController = controller
     allViewModels.blogViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    allViewModels.blogDetailViewModel = viewModel(factory = AppViewModelProvider.Factory)
 
     MasteryHubTheme(darkTheme = appState.value.isDarkTheme) {
         NavHost(navController = controller, route = "main", startDestination = Screen.HomeScreen.route){
+
+
             composable(route = Screen.HomeScreen.route){
                 Drawer(generalViewModel){
                     HomeScreen(navController = controller, openDrawer = {
@@ -38,6 +42,7 @@ fun MainLayout(generalViewModel: GeneralViewModel) {
                     })
                 }
             }
+
 
             composable(route= Screen.BlogScreen.route){
                 BlogLayout {
@@ -50,6 +55,7 @@ fun MainLayout(generalViewModel: GeneralViewModel) {
                 }
             }
 
+
             composable(route = Screen.MediaScreen.route){
                 MediaLayout{
                     controller.navigate(it){
@@ -59,6 +65,11 @@ fun MainLayout(generalViewModel: GeneralViewModel) {
                         launchSingleTop = true
                     }
                 }
+            }
+
+
+            composable(route = Screen.SettingScreen.route){
+                SettingScreen()
             }
         }
     }

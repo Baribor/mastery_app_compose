@@ -12,5 +12,9 @@ object AppViewModelProvider {
         initializer {
             BlogViewModel(MasteryApp.getApp().container.blogRepository)
         }
+
+        initializer {
+            BlogDetailViewModel()
+        }
     }
 }

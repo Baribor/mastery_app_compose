@@ -2,4 +2,8 @@
     <string name="app_name">MasteryHub</string>
     <string name="mastery_media_nigeria">Mastery Media Nigeria</string>
     <string name="mastery_logo_desc">Mastery Media Logo</string>
+    <string name="settings_blog_update">com.cursydev.masteryhub.BLOG_UPDATE</string>
+    <string name="settings_media_download">com.cursydev.masteryhub.MEDIA_DOWNLOAD</string>
+    <string name="settings_motivational_update">com.cursydev.masteryhub.MOTIVATIONAL_UPDATE</string>
+    <string name="intro_launched">com.cursydev.masteryhub.INTRO_LAUNCHED</string>
 </resources>

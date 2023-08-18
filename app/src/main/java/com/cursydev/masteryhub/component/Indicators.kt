@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.cursydev.masteryhub.ui.theme.MasteryGreen
 
 
 @Composable
@@ -21,7 +20,7 @@ fun DotIndicators(modifier: Modifier = Modifier,
                   selectedIndex: Int,
                   dotSize: Dp
 ) {
-    val selectedColor = MasteryGreen
+    val selectedColor = MaterialTheme.colorScheme.primary
     val unSelectedColor =  Color.Transparent
 
     LazyRow(

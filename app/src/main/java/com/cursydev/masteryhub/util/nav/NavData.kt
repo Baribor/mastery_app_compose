@@ -1,4 +1,4 @@
-package com.cursydev.masteryhub.component.nav
+package com.cursydev.masteryhub.util.nav
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

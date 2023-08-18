@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import androidx.preference.PreferenceManager
+import com.cursydev.masteryhub.MasteryApp
 import com.cursydev.masteryhub.R
 import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 import kotlinx.coroutines.delay
@@ -44,13 +46,15 @@ fun SplashBackground() {
 
 @Composable
 fun SplashScreen(modifier: Modifier = Modifier, navController: NavController? = null) {
+    val introLaunched = PreferenceManager.getDefaultSharedPreferences(MasteryApp.getApp()).getBoolean(
+        stringResource(id = R.string.intro_launched), false)
 
     LaunchedEffect(key1 = null){
         delay(3000)
 
         navController?.apply {
             popBackStack()
-            navigate(Screen.IntroScreen.route)
+            navigate(if(introLaunched) Screen.HomeScreen.route  else Screen.IntroScreen.route)
         }
     }
 

@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +19,8 @@ class GeneralViewModel: ViewModel() {
 
     private val _appState = MutableStateFlow(GeneralUiState())
     val appState : StateFlow<GeneralUiState> = _appState.asStateFlow()
+
+    lateinit var navController: NavController
 
     var drawerState by mutableStateOf(DrawerState(DrawerValue.Closed))
         private set
@@ -56,6 +59,7 @@ class GeneralViewModel: ViewModel() {
 class ViewModels {
     lateinit var blogViewModel: BlogViewModel
     lateinit var generalViewModel: GeneralViewModel
+    lateinit var blogDetailViewModel: BlogDetailViewModel
 }
 
 val allViewModels = ViewModels()

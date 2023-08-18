@@ -12,7 +12,7 @@ class Constants {
 
 
 
-data class ProcessStatus(var status:Status=Status.SUCCESS, val itemsList:MutableList<Titleable> = mutableListOf()){
+class ProcessStatus(var status:Status=Status.SUCCESS, val itemsList:MutableList<Titleable> = mutableListOf()){
     companion object{
         enum class Status{
             SUCCESS,

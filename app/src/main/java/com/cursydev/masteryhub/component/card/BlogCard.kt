@@ -22,12 +22,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.cursydev.masteryhub.R
 import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 import com.cursydev.masteryhub.util.BlogData
 
@@ -41,9 +44,18 @@ fun BlogCard(blogData: BlogData, onClick: (blogData: BlogData)->Unit = {}) {
         shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
-        )) {
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 5.dp
+        )
+        ) {
 
-        AsyncImage(model = blogData.imgUrl, contentDescription = blogData.mTitle,
+        AsyncImage(model = with(ImageRequest.Builder(LocalContext.current)){
+            data(blogData.imgUrl)
+            crossfade(true)
+            error(R.drawable.mastery_logo)
+            build()
+        }, contentDescription = blogData.mTitle,
             contentScale = ContentScale.FillBounds, modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp))
@@ -79,7 +91,7 @@ fun BlogCardPrev() {
         fullUrl = "some full url"
     )
 
-    MasteryHubTheme(darkTheme = true) {
+    MasteryHubTheme(darkTheme = false) {
         BlogCard(blogData = data)
     }
 }

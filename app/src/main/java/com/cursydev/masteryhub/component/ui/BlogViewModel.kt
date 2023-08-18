@@ -1,9 +1,7 @@
 package com.cursydev.masteryhub.component.ui
 
 import android.content.Context
-import android.text.BoringLayout
 import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,13 +17,13 @@ import com.cursydev.masteryhub.util.ProcessStatus.Companion.Status
 import com.cursydev.masteryhub.util.Titleable
 import com.cursydev.masteryhub.util.isNetworkAvailable
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.forEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class BlogViewModel(private val blogRepository: BlogRepository): ViewModel(), BackgroundProcessListener {
+class BlogViewModel(private val blogRepository: BlogRepository): ViewModel(), BackgroundProcessListener<BlogData> {
 
     var toolbarTitle = mutableStateOf("Blogs")
         private set
@@ -35,7 +33,9 @@ class BlogViewModel(private val blogRepository: BlogRepository): ViewModel(), Ba
     var activeBlogDetail: BlogDetail? = null
         private set
 
-    var blogs = mutableStateOf(listOf<BlogData>())
+    private val _blogs = MutableStateFlow(mutableListOf<BlogData>())
+    var blogs : StateFlow<MutableList<BlogData>> =_blogs.asStateFlow()
+
     var isLoading = mutableStateOf(true)
         private set
 
@@ -45,15 +45,28 @@ class BlogViewModel(private val blogRepository: BlogRepository): ViewModel(), Ba
 
     override fun onFinish(result: ProcessStatus) {
         if(result.status == Status.FAIL){
-            Log.d("retrieval stat:", "An error occurred")
+            Log.d("retrieve", "An error occurred")
             isLoading.value = false
             return
         }
 
-        blogs.value = result.itemsList as List<BlogData>
-        isLoading.value = false
+        val newItems = mutableListOf<BlogData>()
+        result.itemsList.forEach {
+            it as BlogData
+            newItems.add(it)
+        }
+        /*blogs.addAll(newItems)*/
+        Log.d("retrieve", "Retrieve done")
         viewModelScope.launch {
-            blogRepository.insertBlogs(blogs.value)
+            blogRepository.insertBlogs(newItems)
+            Log.d("retrieve", "Insert called")
+            blogRepository.getAllBlogs().collect{ newBlogs ->
+                _blogs.update{
+                    newBlogs.toMutableList()
+                }
+            }
+            isLoading.value = false
+
         }
     }
 
@@ -73,9 +86,11 @@ class BlogViewModel(private val blogRepository: BlogRepository): ViewModel(), Ba
         }else{
 
             viewModelScope.launch {
-               blogRepository.getAllBlogs().collect{
-                blogs.value = it
-                Log.d("retrieval stat:", "Finished setting from database")
+               blogRepository.getAllBlogs().collect{ newBlogs ->
+                   _blogs.update{
+                       newBlogs.toMutableList()
+                   }
+                Log.d("retrieve", "Finished setting from database")
                }
             }
         }

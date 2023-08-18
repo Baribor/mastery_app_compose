@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -25,15 +26,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
-import androidx.navigation.NavController
 import com.cursydev.masteryhub.R
 import com.cursydev.masteryhub.component.DotIndicators
 import com.cursydev.masteryhub.component.IntroHeader
-import com.cursydev.masteryhub.ui.theme.MasteryGreen
 import com.cursydev.masteryhub.ui.theme.MasteryHubTheme
 
 val constraintSet = ConstraintSet {
@@ -56,7 +56,7 @@ val constraintSet = ConstraintSet {
 
 
 @Composable
-fun IntroScreen(modifier: Modifier = Modifier, onExitScreen: ()->Unit = {}) {
+fun IntroScreen(modifier: Modifier = Modifier, onExitScreen: (key: String)->Unit = {}) {
 
     val imgDescs = stringArrayResource(id = R.array.intro_pics_desc)
     val imgIds =
@@ -64,6 +64,8 @@ fun IntroScreen(modifier: Modifier = Modifier, onExitScreen: ()->Unit = {}) {
     var index by remember {
         mutableStateOf(0)
     }
+
+    val key = stringResource(id = R.string.intro_launched)
 
     ConstraintLayout(
         constraintSet = constraintSet, modifier = Modifier
@@ -94,8 +96,8 @@ fun IntroScreen(modifier: Modifier = Modifier, onExitScreen: ()->Unit = {}) {
             ) {
                 AnimatedVisibility(visible = index < 2) {
 
-                    TextButton(onClick = { onExitScreen() }) {
-                        Text(text = "SKIP", color = MasteryGreen)
+                    TextButton(onClick = { onExitScreen(key) }) {
+                        Text(text = "SKIP", color = MaterialTheme.colorScheme.primary)
                     }
                 }
                 Spacer(modifier = Modifier.width(12.dp))
@@ -103,12 +105,12 @@ fun IntroScreen(modifier: Modifier = Modifier, onExitScreen: ()->Unit = {}) {
                     onClick = {
                         if (index == 2)
                         {
-                           onExitScreen()
+                           onExitScreen(key)
                             return@Button
                         }
                         index++
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MasteryGreen),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier.animateContentSize()
                 ) {
                     Text(text = if(index<2) "Next" else "Continue")

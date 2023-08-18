@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,11 +32,12 @@ import com.cursydev.masteryhub.util.toBlogDetail
 
 @Composable
 fun MainBlogScreen(onShowDetail: (blogData: BlogData)->Unit) {
+    val blogs = allViewModels.blogViewModel.blogs.collectAsState()
 
-    if(allViewModels.blogViewModel.blogs.value.isNotEmpty()){
+    if(blogs.value.isNotEmpty()){
         LazyColumn(modifier = Modifier.background(MaterialTheme.colorScheme.background),contentPadding = PaddingValues(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)){
-            items(allViewModels.blogViewModel.blogs.value.size){
-                val blogData = allViewModels.blogViewModel.blogs.value[it]
+            items(blogs.value.size){
+                val blogData = blogs.value[it]
                 BlogCard(blogData){ bD ->
                     onShowDetail(bD)
                 }

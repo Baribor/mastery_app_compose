@@ -12,11 +12,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.cursydev.masteryhub.component.nav.BottomNav
-import com.cursydev.masteryhub.component.nav.BottomNavLayout
-import com.cursydev.masteryhub.component.nav.Toolbar
-import com.cursydev.masteryhub.component.nav.ToolbarActionsData
-import com.cursydev.masteryhub.component.nav.ToolbarLayout
+import com.cursydev.masteryhub.util.nav.BottomNav
+import com.cursydev.masteryhub.util.nav.BottomNavLayout
+import com.cursydev.masteryhub.util.nav.Toolbar
+import com.cursydev.masteryhub.util.nav.ToolbarActionsData
+import com.cursydev.masteryhub.util.nav.ToolbarLayout
 import com.cursydev.masteryhub.component.ui.allViewModels
 import com.cursydev.masteryhub.screens.Screen
 import com.cursydev.masteryhub.screens.blog.BlogDetailScreen
@@ -65,7 +65,7 @@ fun BlogLayout(onExternalNav: (route: String)->Unit) {
 
                 composable(route= Screen.BlogScreens.MainBlogScreen.route){
                     MainBlogScreen{ bD ->
-                        allViewModels.blogViewModel.setActiveBlogDetail(bD.toBlogDetail())
+                        allViewModels.blogDetailViewModel.setCurrentBlogData(bD)
                         controller.navigate(Screen.BlogDetailScreen.route)
                     }
                 }
@@ -75,7 +75,7 @@ fun BlogLayout(onExternalNav: (route: String)->Unit) {
                 }
 
                 composable(route = Screen.BlogDetailScreen.route){
-                    BlogDetailScreen(blogDetail = allViewModels.blogViewModel.activeBlogDetail!!){
+                    BlogDetailScreen(blogData = allViewModels.blogDetailViewModel.currentBlogData){
                         controller.popBackStack()
                     }
                 }

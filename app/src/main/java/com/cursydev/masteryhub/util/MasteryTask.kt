@@ -1,16 +1,17 @@
 package com.cursydev.masteryhub.util
 
+import android.content.Context
 import kotlinx.coroutines.DelicateCoroutinesApi
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 @DelicateCoroutinesApi
-class MasteryTasks(
+class MasteryTasks<T : Titleable>(
     private val model: Model,
-    private val listener: BackgroundProcessListener,
+    private val listener: BackgroundProcessListener<T>,
     val name: String = ""
 ) :
-    CoroutinesAsyncTask<String, Void, ProcessStatus>(name) {
+    CoroutinesAsyncTask<String, Titleable, ProcessStatus>(name) {
 
     lateinit var item: Titleable
     private val result = ProcessStatus()
@@ -87,7 +88,7 @@ class MasteryTasks(
         listener.onFinish(result!!)
     }
 
-    override fun onProgressUpdate(vararg values: Void?) {
+    override fun onProgressUpdate(vararg values: Titleable?) {
         listener.onProgress(item)
     }
 
@@ -98,5 +99,38 @@ class MasteryTasks(
         fun getUrl(model: Model): String = "$BASE_URL${model.relativeUrl}"
 
         fun getContainerClassName(model: Model): String = model.containerClass
+    }
+}
+
+
+
+class RetrieveBlogTask(private val ctx: Context, private val blogData: BlogData, private val listener: BackgroundProcessListener<BlogDetail>) :
+    CoroutinesAsyncTask<Void, Void, ProcessStatus>("") {
+
+    private val result = ProcessStatus()
+    override fun onPreExecute() {
+        //Show the loading screen
+    }
+
+    override fun doInBackground(vararg params: Void?): ProcessStatus {
+        val detail = BlogDetail("", "", "", "")
+        try {
+            val doc = Jsoup.connect(blogData.fullUrl).get()
+            detail.author = doc.getElementsByClass("author-name")[0].text()
+            detail.authorImgSrc = doc.getElementsByClass("blog-author-img")[0].attr("src")
+            detail.date = getDate(doc.getElementsByClass("author-date")[0].text())
+            val element = doc.getElementsByClass("blog-post-content")[0]
+            saveBlog(element, blogData.fullUrl, ctx)
+            detail.body = element
+            result.itemsList.add(detail)
+        } catch (e: Exception) {
+            result.status = ProcessStatus.Companion.Status.FAIL
+        }
+
+        return result
+    }
+
+    override fun onPostExecute(result: ProcessStatus?) {
+        listener.onFinish(result!!)
     }
 }

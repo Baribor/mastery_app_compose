@@ -1,7 +1,9 @@
-package com.cursydev.masteryhub.component.nav
+package com.cursydev.masteryhub.util.nav
 
 import android.icu.text.CaseMap.Title
 import android.util.Log
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -14,6 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 
 sealed class Toolbar(val uiData: ToolbarUiData) {
     object HomeScreenToolbar :
@@ -49,7 +54,7 @@ fun Toolbar.ToolbarLayout(actionsData: ToolbarActionsData?, title: String = "") 
         ),
         actions = {
             uiData.actions?.let { icons ->
-                icons.forEachIndexed { index, imageVector ->
+                icons.forEach { imageVector ->
                     IconButton(onClick = {
                         actionsData?.actionHandlers?.let { actionsHandlers ->
                             actionsHandlers[0]()
@@ -59,7 +64,9 @@ fun Toolbar.ToolbarLayout(actionsData: ToolbarActionsData?, title: String = "") 
                     }
                 }
             }
-        }
+        },
+
+        modifier = Modifier.padding(8.dp).clip(RoundedCornerShape(50))
     )
 }
 

@@ -10,11 +10,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.cursydev.masteryhub.component.nav.BottomNav
-import com.cursydev.masteryhub.component.nav.BottomNavLayout
-import com.cursydev.masteryhub.component.nav.Toolbar
-import com.cursydev.masteryhub.component.nav.ToolbarActionsData
-import com.cursydev.masteryhub.component.nav.ToolbarLayout
+import com.cursydev.masteryhub.util.nav.BottomNav
+import com.cursydev.masteryhub.util.nav.BottomNavLayout
+import com.cursydev.masteryhub.util.nav.Toolbar
+import com.cursydev.masteryhub.util.nav.ToolbarActionsData
+import com.cursydev.masteryhub.util.nav.ToolbarLayout
 import com.cursydev.masteryhub.component.ui.MediaViewModel
 import com.cursydev.masteryhub.screens.Screen
 import com.cursydev.masteryhub.screens.media.MusicScreen

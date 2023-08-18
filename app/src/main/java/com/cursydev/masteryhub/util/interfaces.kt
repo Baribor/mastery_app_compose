@@ -8,7 +8,7 @@ interface Titleable {
 
 
 
-interface BackgroundProcessListener{
+interface BackgroundProcessListener<T:Titleable>{
     fun onFinish(result:ProcessStatus)
     fun onProgress(item:Titleable)
     fun getListenerContext(): Context

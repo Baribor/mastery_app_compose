@@ -15,6 +15,7 @@ const val BLOG_BASED = "blog_base"
 
 sealed class Screen(val route: String){
     object IntroScreen: Screen("intro_screen")
+    object SettingScreen: Screen("setting_screen")
     object HomeScreen: Screen("home_screen")
     object SplashScreen: Screen("splash_screen")
     object MediaScreen: Screen("media_screen")
